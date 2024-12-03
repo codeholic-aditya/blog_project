@@ -1,7 +1,7 @@
 
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 
 class User(BaseModel):
     username:str
@@ -40,3 +40,18 @@ class UpdatedUserDetail(BaseModel):
 class UserPostRS(BaseModel):
     title : Optional[str] = None
     description : Optional[str] = None
+    
+class GetPostDetails(BaseModel):
+    title : str 
+    description : str 
+    created_at : str
+    updated_at : str 
+
+
+class GetUserPost(BaseModel):
+    users_post : Optional[list[GetPostDetails]]
+    total : Optional[int] = None
+    
+    
+# class UpdatePost(BaseModel):
+#     user_post : Optional[list]

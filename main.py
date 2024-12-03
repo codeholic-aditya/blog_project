@@ -105,10 +105,57 @@ def update_front_user(
 def add_post(
     request : schema.UserPost,
     sql : Session=Depends(get_db),
-    header: str = Header()
+    header: str = Header("Default Value")
 ):
     if header == "Default Value":
         raise HTTPException(status_code=400, detail="Header is required")
 
     return controller.add_user_post(request,sql,header)
 
+
+@app.get(
+    "/get-post",
+    response_model=responseschema.GetUserPost
+)
+def get_post(
+    offset : int=0,
+    limit : int=10,
+    sql : Session=Depends(get_db),
+    header: str = Header()
+):
+    if header == "":
+        raise HTTPException(status_code=400, detail="Header is required")
+
+    return controller.get_user_post(offset,limit,sql,header)
+
+
+@app.delete(
+    "/delete-post",
+    response_model=responseschema.UserPostRS
+)
+def delete_post(
+    post_id : str,
+    sql: Session=Depends(get_db),
+    header : str=Header()
+):
+    if header =="":
+        raise HTTPException (status_code=400,detail="Header is required")
+    
+    return controller.delete_user_post(post_id,sql,header)
+
+
+@app.post(
+    "/update-post",
+    response_model=responseschema.UserPostRS
+)
+def update_post(
+    post_id : str,
+    title : str,
+    description : str,
+    sql : Session=Depends(get_db),
+    header : str=Header()
+):
+    if header=="":
+        raise HTTPException (status_code=400,detail="Header is required")
+
+    return controller.update_user_post(post_id,title,description,sql,header)

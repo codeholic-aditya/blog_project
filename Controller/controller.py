@@ -15,6 +15,7 @@ from dependencies import (
 )
 import datetime
 from dependencies import auth_token
+from responseschema import UserPostRS
 
 # from Middelware.middle_ware import update_user_check
 
@@ -298,9 +299,114 @@ def add_user_post(
         )
         sql.add(user_post)
         sql.commit()
-        return {"message":user_post}
+        
+        return {
+            "title":user_post.title,
+            "description":user_post.description
+            }
     else:
         return {"message":"Please login first!!"}
-        # if query_post:
-            
+
+
+def get_user_post(
+    offset : int,
+    limit : int,
+    sql : Session,
+    header:str
+):
+    tokens=auth_token(header,sql)
     
+    if header != tokens:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    is_user=sql.query(LoginUserModel).filter(LoginUserModel.token==header).first()
+
+    if is_user:
+        showAllPost=sql.query(UserPostModel).filter(UserPostModel.user_id==is_user.id).offset(offset).limit(limit).all()
+        count=sql.query(UserPostModel).filter(UserPostModel.user_id==is_user.id).all()
+        
+        posts_data = []
+
+        # Loop through the posts and append the relevant details to the list
+        for post in showAllPost:
+            posts_data.append({
+                "title": post.title,
+                "description": post.description,
+                "created_at": post.createdat,
+                "updated_at": post.updatedat
+        })
+            
+        return {
+            "users_post": posts_data,
+            "total": len(count)
+        }
+
+
+def delete_user_post(
+    post_id : str,
+    sql : Session,
+    header:str
+):
+    tokens=auth_token(header,sql)
+    
+    if header != tokens:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    is_user=sql.query(LoginUserModel).filter(LoginUserModel.token==header).first()
+
+    if not is_user:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    delete_post = sql.query(
+        UserPostModel
+        ).filter_by(
+            po_id = post_id,
+            status="True"
+            ).first()
+
+    if not delete_post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    delete_post.status="False"
+    
+    sql.commit()
+
+    return {
+        "title": delete_post.title,
+        "description": delete_post.description
+    }
+    
+    
+def update_user_post(
+    post_id : str,
+    title : str,
+    description : str,
+    sql : Session,
+    header : str
+):
+    token=auth_token(header,sql)
+    
+    if header!=token:
+        raise HTTPException(status_code=401,detail="Unauthorized")
+
+    post_update=sql.query(
+        UserPostModel
+        ).filter_by(
+            po_id=post_id,
+            status="True"
+            ).first()
+    
+    if not post_update:
+        raise HTTPException(status_code=401,detail="Unauthorized")
+    
+    post_update.title=title
+    post_update.description=description
+    post_update.updatedat=datetime.datetime.now()
+    
+    sql.commit()
+
+
+    return {
+        "title": post_update.title,
+        "description": post_update.description
+    }

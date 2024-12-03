@@ -22,7 +22,6 @@ def generate_uuid():
     
     return hash_code
 
-#written by aditya 2-12-2024
 
 def hash_generator(input_string:str):
     """
@@ -49,11 +48,11 @@ def hash_convertor(encoded_string:str):
 def auth_token(tokens:str,sql:Session=Depends(get_db)):
     
     is_exist=sql.query(LoginUserModel).filter(LoginUserModel.token==tokens).first()
-
+    
+    if is_exist is None:
+        return ValueError("Invalid token or user not found")
     return is_exist.token
 
-    
-    
     
 class validation:
     @staticmethod
