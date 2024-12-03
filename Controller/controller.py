@@ -19,7 +19,6 @@ from responseschema import UserPostRS
 
 # from Middelware.middle_ware import update_user_check
 
-FU_ID=""
 
 def register_user(
     request: schema.FrontendUser,
