@@ -276,16 +276,16 @@ def update_user(
 
 def add_user_post(
     request : schema.UserPost,
-    sql : Session
-    # header:str
+    sql : Session,
+    header:str
 ):
-    # tokens=auth_token(header,sql)
+    tokens=auth_token(header,sql)
     
     
-    # if header != "tokens":
-    #     raise HTTPException(status_code=401, detail="Unauthorized")
+    if header != tokens:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
-    is_user=sql.query(LoginUserModel).filter(LoginUserModel.token=="header").first()
+    is_user=sql.query(LoginUserModel).filter(LoginUserModel.token==header).first()
 
     if is_user:
         user_post=UserPostModel(
@@ -298,6 +298,7 @@ def add_user_post(
         )
         sql.add(user_post)
         sql.commit()
+        return {"message":user_post}
     else:
         return {"message":"Please login first!!"}
         # if query_post:

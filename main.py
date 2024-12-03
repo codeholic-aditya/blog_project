@@ -110,5 +110,5 @@ def add_post(
     if header == "Default Value":
         raise HTTPException(status_code=400, detail="Header is required")
 
-    return controller.add_user_post(request,sql)
+    return controller.add_user_post(request,sql,header)
 

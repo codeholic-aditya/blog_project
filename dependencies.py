@@ -46,9 +46,9 @@ def hash_convertor(encoded_string:str):
     return decoded_string
 
 
-def auth_token(token:str,sql:Session=Depends(get_db)):
+def auth_token(tokens:str,sql:Session=Depends(get_db)):
     
-    is_exist=sql.query(LoginUserModel).filter(LoginUserModel.token==token).first()
+    is_exist=sql.query(LoginUserModel).filter(LoginUserModel.token==tokens).first()
 
     return is_exist.token
 

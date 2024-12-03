@@ -38,5 +38,5 @@ class UpdatedUserDetail(BaseModel):
     updatedat : Optional[str] = None
 
 class UserPostRS(BaseModel):
-    title : str
-    description : str
+    title : Optional[str] = None
+    description : Optional[str] = None
