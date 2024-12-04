@@ -74,7 +74,10 @@ def register_user(
         sql.commit()
         sql.refresh(new_user)
 
-        return {"user":new_user}
+        return {
+            "user":new_user,
+            "message":"User register successfully"
+            }
 
 
 def get_user(
