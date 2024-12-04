@@ -1,4 +1,6 @@
-from fastapi import Depends, FastAPI, HTTPException, Header
+from fastapi import Depends, FastAPI, Form, HTTPException, Header, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from Schema import schema
 from sqlalchemy.orm import Session
@@ -8,8 +10,32 @@ import sqlite3
 import responseschema
 import re
 from Middelware.middle_ware import update_user_check
+from fastapi.staticfiles import StaticFiles
 
 app=FastAPI()
+
+# Mount the static folder at the `/static` path
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+templates = Jinja2Templates(directory="templates")
+
+@app.get("/register-page", response_class=HTMLResponse)
+async def show_form(request: Request):
+    # Render the form template
+    return templates.TemplateResponse("index.html", {"request": request})
+
+# @app.post("/submit-from")
+# def form_data(
+#     username:str= Form(...),
+#     firstname:str= Form(...),
+#     lastname:str= Form(...),
+#     email: str= Form(...),
+#     password:str= Form(...),
+#     phone: int= Form(...),
+#     address:str= Form(...)
+# ):
+    
+
 
 @app.post(
     "/register",
@@ -152,6 +178,7 @@ def update_post(
     post_id : str,
     title : str,
     description : str,
+# hello how are you
     sql : Session=Depends(get_db),
     header : str=Header()
 ):
@@ -159,13 +186,3 @@ def update_post(
         raise HTTPException (status_code=400,detail="Header is required")
 
     return controller.update_user_post(post_id,title,description,sql,header)
-
-
-# 03-12-2024 | Tuesday
-# --> user's post api resolve issue
-# --> create get user post api
-# --> create delete post api
-# --> networking explained by devanshu bhaiya
-# --> create update post api
-# --> push code in github
-# hello how are you

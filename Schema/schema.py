@@ -14,10 +14,6 @@ class FrontendUser(BaseModel):
 class UserPost(BaseModel):
     title : str
     description : str
-    # createdat : str
-    # updatedat : str
-    # po_id : str
-    # status : str
 
     
 class Login(BaseModel):
