@@ -161,11 +161,3 @@ def update_post(
     return controller.update_user_post(post_id,title,description,sql,header)
 
 
-# 03-12-2024 | Tuesday
-# --> user's post api resolve issue
-# --> create get user post api
-# --> create delete post api
-# --> networking explained by devanshu bhaiya
-# --> create update post api
-# --> push code in github
-# hello how are you
