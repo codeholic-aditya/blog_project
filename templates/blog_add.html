@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/css/index.css"> <!-- Link to external CSS file -->
+    <script src="static/js/add_blog.js"></script>
+    <title>Add Blog</title>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <a href="/">BlogSite</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Add Blog</a></li>
+                <li><a href="#">Delete Blog</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Add Blog Form -->
+    <div class="add-blog-container">
+        <h2>Add a New Blog</h2>
+        
+        <form id="add-blog-form">
+            <div class="input-container">
+                <label for="title">Blog Title:</label>
+                <input type="text" id="title" name="title" placeholder="Enter Blog Title" required>
+            </div>
+
+            <div class="input-container">
+                <label for="description">Blog Description:</label>
+                <textarea id="description" name="description" placeholder="Enter Blog Description" rows="6" required></textarea>
+            </div>
+
+            <input type="submit" value="Submit Blog">
+        </form>
+    </div>
+
+    <script src="app.js"></script> <!-- Link to external JS file -->
+</body>
+</html>

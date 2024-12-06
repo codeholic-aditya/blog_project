@@ -53,5 +53,6 @@ class GetUserPost(BaseModel):
     total : Optional[int] = None
     
     
-# class UpdatePost(BaseModel):
-#     user_post : Optional[list]
+class LoginSchema(BaseModel):
+    message : Optional[str] = None
+    token : Optional[str] = None

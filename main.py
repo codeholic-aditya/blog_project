@@ -22,19 +22,22 @@ templates = Jinja2Templates(directory="templates")
 @app.get("/register-page", response_class=HTMLResponse)
 async def show_form(request: Request):
     # Render the form template
+    return templates.TemplateResponse("register.html", {"request": request})
+
+@app.get("/login-page", response_class=HTMLResponse)
+async def show_form(request: Request):
+    # Render the form template
+    return templates.TemplateResponse("login.html", {"request": request})
+
+@app.get("/", response_class=HTMLResponse)
+async def show_form(request: Request):
+    # Render the form template
     return templates.TemplateResponse("index.html", {"request": request})
 
-# @app.post("/submit-from")
-# def form_data(
-#     username:str= Form(...),
-#     firstname:str= Form(...),
-#     lastname:str= Form(...),
-#     email: str= Form(...),
-#     password:str= Form(...),
-#     phone: int= Form(...),
-#     address:str= Form(...)
-# ):
-    
+@app.get("/blog-add", response_class=HTMLResponse)
+async def show_form(request: Request):
+    # Render the form template
+    return templates.TemplateResponse("blog_add.html", {"request": request})
 
 
 @app.post(
@@ -81,7 +84,7 @@ def delete_front_user(
 
 @app.post(
     "/login",
-    response_model=responseschema.UserDetails
+    response_model=responseschema.LoginSchema
 )
 def login_front_user(
     request: schema.Login,
@@ -131,9 +134,9 @@ def update_front_user(
 def add_post(
     request : schema.UserPost,
     sql : Session=Depends(get_db),
-    header: str = Header("Default Value")
+    header: str = Header("")
 ):
-    if header == "Default Value":
+    if header == "":
         raise HTTPException(status_code=400, detail="Header is required")
 
     return controller.add_user_post(request,sql,header)

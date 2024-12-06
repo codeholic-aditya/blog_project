@@ -124,71 +124,66 @@ def delete_user(
     return {"user": user_del}
 
 
-def login_user(
-    request:schema.Login,
-    sql:Session
-):
+def login_user(request: schema.Login, sql: Session):
     """
-    This function is used to login the user if he is already register
+    This function is used to login the user if they are already registered.
     """
-    
+
     if not request.username.strip():
         return {"message": "Username is invalid"}
 
     if not request.password.strip():
         return {"message": "Password is invalid"}
 
+    
     if validation.email_validation_check(request.username):
-        isUserExists=sql.query(
-            FrontUserModel
-        ).filter(
-            FrontUserModel.email==request.username
-        ).first()
-    else:
-        isUserExists=sql.query(
-            FrontUserModel
-        ).filter(
-            FrontUserModel.username==request.username
-        ).first()
-    
-    
-    if isUserExists:
+        isUserExists = sql.query(FrontUserModel).filter(FrontUserModel.email == request.username).first()
         
-        if isUserExists.status=="False":
-            return {"message":"User not found"}
-        
-        get_password=hash_convertor(isUserExists.password)
-
-        if not get_password==request.password:
-            return {"message":"password incorrect"}
-
-        login_table=sql.query(LoginUserModel).filter(isUserExists.id==LoginUserModel.userid).first()
-
-        if login_table:
-            login_table.token=generate_uuid()
-            login_table.updatedat=str(datetime.datetime.now())
-            sql.commit()
-        else:
-            
-            loginuser = LoginUserModel(
-                userid=isUserExists.id,
-                token = generate_uuid(),
-                createdat = str(datetime.datetime.now()),
-                updatedat = str(datetime.datetime.now()),
-            )
-            sql.add(loginuser)
-            sql.commit()
-            sql.refresh(loginuser)
-
-        return {"message":"User logined successfully"}
-
     else:
-        return {"message":"User is not found"}
+        isUserExists = sql.query(FrontUserModel).filter(FrontUserModel.username == request.username).first()
+
+    
+    if not isUserExists:
+        return {"message": "User not found"}
+
+    
+    if isUserExists.status == "False":
+        return {"message": "User is inactive"}
+
+    
+    get_password = hash_convertor(isUserExists.password)
+    if get_password != request.password:
+        return {"message": "Incorrect password"}
+
+    # Check if the user is already logged in
+    login_table = sql.query(LoginUserModel).filter(LoginUserModel.userid == isUserExists.id).first()
+
+    # If user is already logged in, update their token
+    if login_table:
+        login_table.token = generate_uuid()  # Regenerate token
+        login_table.updatedat = str(datetime.datetime.now())
+        sql.commit()
+        sql.refresh(login_table)
+        return {"message": "Login successful", "token": login_table.token}
+
+    # If the user is not logged in yet, create a new login entry
+    loginuser = LoginUserModel(
+        userid=isUserExists.id,
+        token=generate_uuid(),
+        createdat=datetime.datetime.now(),
+        updatedat=datetime.datetime.now()
+    )
+    
+    sql.add(loginuser)
+    sql.commit()
+    sql.refresh(loginuser)
+
+    return {"message": "Login successful", "token": loginuser.token}
 
 
 def logout_users(
     username : str,
-    sql : Session
+    sql : Session   
 ):
     """
     This function is used to logout the user

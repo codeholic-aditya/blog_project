@@ -4,35 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="static/js/app.js"></script>
-    <title>Register User</title>
+    <link rel="stylesheet" href="static/css/index.css">
+    <title>Blog Project</title>
 </head>
 <body>
-    <h1>Register User</h1>
-    
-    <!-- Use `POST` method for submitting the form, but we will prevent default submission with JS -->
-    <form id="register-form">
-        <label for="username">Username:</label>
-        <input class="cd_doted" type="text" id="username" name="username" required><br><br>
-
-        <label for="firstname">First Name:</label>
-        <input type="text" id="firstname" name="firstname" required><br><br>
-
-        <label for="lastname">Last Name:</label>
-        <input type="text" id="lastname" name="lastname" required><br><br>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        
-        <label for="phone">Phone:</label>
-        <input type="text" id="phone" name="phone" required><br><br>
-
-        <label for="address">Address:</label>
-        <input type="text" id="address" name="address" required><br><br>
-
-        <input class="dotted_c_2" type="submit" value="Submit">
-    </form>
+     <!-- Navbar -->
+     <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <a href="#">BlogSite</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="blog-add">Add Blog</a></li>
+                <li><a href="#">Delete Blog</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Logout</a></li>
+                <!--<li><a href="login-page">Login</a></li>
+                <li><a href="register-page">SignUp</a></li>-->
+                
+            </ul>
+        </div>
+    </nav>
 </body>
 </html>
