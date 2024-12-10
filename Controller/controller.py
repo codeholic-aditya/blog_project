@@ -1,5 +1,5 @@
 import re
-from fastapi import HTTPException
+from fastapi import HTTPException,status
 from sqlalchemy.orm import Session
 from Schema import schema
 from Model.frontendusermodel import (
@@ -36,24 +36,25 @@ def register_user(
     if isRegister:
         
         if isRegister.username == request.username:
-            return {"message": "User already exists"}
+            # return {"status":statu,"message": "User already exists"}
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="User already exists")
         
         
     else:
         if not validation.email_validation_check(request.email):
-            return {"message":"Email is not valid"}
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Email is not valid")
         
         
         if not validation.phone_validation_check(request.phone):
-            return {"message":"Phone is not valid"}
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Phone is not valid")
         
         # Validate fields
         
         if not request.username.strip():
-            return {"message": "Username is invalid"}
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Username is invalid")
         
         if not request.password.strip():
-            return {"message": "Password is invalid"}
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Password is invalid")
         
         
         # Create a new user instance

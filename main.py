@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI, Form, HTTPException, Header, Request
+from fastapi import Depends, FastAPI, Form, HTTPException, Header, Request,status
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
@@ -42,7 +42,8 @@ async def show_form(request: Request):
 
 @app.post(
     "/register",
-    response_model=responseschema.UserDetails
+    response_model=responseschema.UserDetails,
+    status_code=status.HTTP_201_CREATED
 )
 def register(
     request:schema.FrontendUser,
@@ -57,7 +58,8 @@ def register(
 
 @app.get(
     "/get-frontend-user",
-    response_model=responseschema.UserDetails2
+    response_model=responseschema.UserDetails2,
+    status_code=status.HTTP_200_OK
 )
 def get_front_user(
     offset: int=0,
@@ -72,7 +74,8 @@ def get_front_user(
 
 @app.delete(
     "/delete",
-    response_model=responseschema.UserDelete
+    response_model=responseschema.UserDelete,
+    status_code=status.HTTP_200_OK
 )
 def delete_front_user(
     # request: schema.FrontendUser,
@@ -84,7 +87,8 @@ def delete_front_user(
 
 @app.post(
     "/login",
-    response_model=responseschema.LoginSchema
+    response_model=responseschema.LoginSchema,
+    status_code=status.HTTP_200_OK
 )
 def login_front_user(
     request: schema.Login,
@@ -94,7 +98,8 @@ def login_front_user(
 
 
 @app.delete(
-    "/logout"
+    "/logout",
+    status_code=status.HTTP_200_OK
 )
 def logout_user(
     username:str,
@@ -105,7 +110,8 @@ def logout_user(
 
 @app.get(
     "/get-frontend-user-details",
-    response_model=responseschema.User
+    response_model=responseschema.User,
+    status_code=status.HTTP_200_OK
 )
 def frontend_user_details(
 
@@ -117,7 +123,8 @@ def frontend_user_details(
 
 @app.post(
     "/update-user",
-    response_model=responseschema.UpdatedUserDetail
+    response_model=responseschema.UpdatedUserDetail,
+    status_code=status.HTTP_200_OK
 )
 def update_front_user(
     request : schema.UpdateUser,
@@ -129,7 +136,8 @@ def update_front_user(
 
 @app.post(
     "/add-post",
-    response_model=responseschema.UserPostRS
+    response_model=responseschema.UserPostRS,
+    status_code=status.HTTP_201_CREATED
 )
 def add_post(
     request : schema.UserPost,
@@ -144,7 +152,8 @@ def add_post(
 
 @app.get(
     "/get-post",
-    response_model=responseschema.GetUserPost
+    response_model=responseschema.GetUserPost,
+    status_code=status.HTTP_200_OK
 )
 def get_post(
     offset : int=0,
@@ -160,7 +169,8 @@ def get_post(
 
 @app.delete(
     "/delete-post",
-    response_model=responseschema.UserPostRS
+    response_model=responseschema.UserPostRS,
+    status_code=status.HTTP_200_OK
 )
 def delete_post(
     post_id : str,
@@ -175,7 +185,8 @@ def delete_post(
 
 @app.post(
     "/update-post",
-    response_model=responseschema.UserPostRS
+    response_model=responseschema.UserPostRS,
+    status_code=status.HTTP_200_OK
 )
 def update_post(
     post_id : str,

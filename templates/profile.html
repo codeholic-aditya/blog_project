@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 60%;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .profile-info {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .profile-info label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .profile-info input, .profile-info textarea {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .profile-info input:focus, .profile-info textarea:focus {
+            border-color: #4CAF50;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .btn:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>User Profile</h1>
+        <form action="/update-profile" method="POST">
+            <div class="profile-info">
+                <!-- Username -->
+                <div>
+                    <label for="username">Username</label>
+                    <input id="username" name="username" type="text" value="johndoe" />
+                </div>
+
+                <!-- First Name -->
+                <div>
+                    <label for="firstname">First Name</label>
+                    <input id="firstname" name="firstname" type="text"/>
+                </div>
+
+                <!-- Last Name -->
+                <div>
+                    <label for="lastname">Last Name</label>
+                    <input id="lastname" name="lastname" type="text"/>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" />
+                </div>
+
+                <!-- Phone -->
+                <div>
+                    <label for="phone">Phone</label>
+                    <input id="phone" name="phone" type="tel"/>
+                </div>
+
+                <!-- Address -->
+                <div>
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" rows="4" placeholder="address"></textarea>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button class="btn" type="submit">Save Changes</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
