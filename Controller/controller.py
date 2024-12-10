@@ -117,7 +117,8 @@ def delete_user(
     if user_del:
         user_del.status="False"
     else:
-        return {"message": "User not found"}
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        # return {"message": "User not found"}
     
     sql.commit()
     sql.refresh(user_del)
@@ -191,13 +192,16 @@ def logout_users(
     """
     
     if not username.strip():
-        return {"message": "Username is invalid"}
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Username is invalid")
+        # return {"message": "Username is invalid"}
 
     logout_user_id = sql.query(FrontUserModel).filter(FrontUserModel.username==username).first()
     print(logout_user_id)
     
     if not logout_user_id:
-        return {"message": "User not found"}
+        
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        # return {"message": "User not found"}
     
     xx=logout_user_id.id
     
@@ -240,7 +244,8 @@ def update_user(
     sql : Session
 ):
     if not request.username.strip():
-        return {"message":"Username is invalid"}
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Username is invalid")
+        # return {"message":"Username is invalid"}
        
 
     userRow=sql.query(FrontUserModel).filter(FrontUserModel.username==request.username).first()
@@ -270,7 +275,8 @@ def update_user(
         
         return {"message": userRow}
     else :
-        return {"message":"User not found"}
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        # return {"message":"User not found"}
 
 
 def add_user_post(
