@@ -132,10 +132,12 @@ def login_user(request: schema.Login, sql: Session):
     """
 
     if not request.username.strip():
-        return {"message": "Username is invalid"}
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Username is invalid")
+        # return {"message": "Username is invalid"}
 
     if not request.password.strip():
-        return {"message": "Password is invalid"}
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Password is invalid")
+        # return {"message": ""}
 
     
     if validation.email_validation_check(request.username):
@@ -146,16 +148,20 @@ def login_user(request: schema.Login, sql: Session):
 
     
     if not isUserExists:
-        return {"message": "User not found"}
+        
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        # return {"message": ""}
 
     
     if isUserExists.status == "False":
-        return {"message": "User is inactive"}
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User is inactive")
+        # return {"message": ""}
 
     
     get_password = hash_convertor(isUserExists.password)
     if get_password != request.password:
-        return {"message": "Incorrect password"}
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Incorrect password")
+        # return {"message": ""}
 
     # Check if the user is already logged in
     login_table = sql.query(LoginUserModel).filter(LoginUserModel.userid == isUserExists.id).first()
@@ -227,7 +233,8 @@ def get_user_details(
     """
     
     if not fuid.strip():
-        return {"Message":"User not found"}
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        # return {"Message":""}
     
     else:
         user_exists=sql.query(FrontUserModel).filter(FrontUserModel.fuid==fuid).first()
