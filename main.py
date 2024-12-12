@@ -175,14 +175,15 @@ def get_post(
     status_code=status.HTTP_200_OK
 )
 def delete_post(
-    title : str,
+    po_id : str,
+    # title : str,
     sql: Session=Depends(get_db),
     header : str=Header()
 ):
     if header =="":
         raise HTTPException (status_code=400,detail="Header is required")
     
-    return controller.delete_user_post(title,sql,header)
+    return controller.delete_user_post(po_id,sql,header)
 
 
 @app.post(

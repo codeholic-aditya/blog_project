@@ -362,17 +362,25 @@ def get_user_post(
                 "title": post.title,
                 "description": post.description,
                 "created_at": post.createdat,
-                "updated_at": post.updatedat
+                "updated_at": post.updatedat,
+                "po_id":post.po_id
         })
-            
-        return {
-            "users_post": posts_data,
-            "total": len(count)
-        }
+        if posts_data:
+            return {
+                "users_post": posts_data,
+                "total": len(count),
+                "message":"No post"
+            }
+        else:
+            return {
+                "users_post": posts_data,
+                "total": len(count),
+                "message":"No post"
+                }
 
 
 def delete_user_post(
-    titles : str,
+    post_id : str,
     sql : Session,
     header:str
 ):
@@ -389,7 +397,7 @@ def delete_user_post(
     delete_post = sql.query(
         UserPostModel
         ).filter_by(
-            title = titles,
+            po_id = post_id,
             status="True"
             ).first()
 

@@ -57,12 +57,14 @@ class GetPostDetails(BaseModel):
     title : str 
     description : str 
     created_at : str
-    updated_at : str 
+    updated_at : str
+    po_id : str 
 
 
 class GetUserPost(BaseModel):
     users_post : Optional[list[GetPostDetails]]
     total : Optional[int] = None
+    message : Optional[str] = None
     
     
 class LoginSchema(BaseModel):
