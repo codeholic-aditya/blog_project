@@ -351,8 +351,8 @@ def get_user_post(
     is_user=sql.query(LoginUserModel).filter(LoginUserModel.token==header).first()
 
     if is_user:
-        showAllPost=sql.query(UserPostModel).filter(UserPostModel.user_id==is_user.id).offset(offset).limit(limit).all()
-        count=sql.query(UserPostModel).filter(UserPostModel.user_id==is_user.id).all()
+        showAllPost=sql.query(UserPostModel).filter_by(user_id=is_user.id,status="True").offset(offset).limit(limit).all()
+        count=sql.query(UserPostModel).filter(UserPostModel.user_id==is_user.id,UserPostModel.status=="True").all()
         
         posts_data = []
 
@@ -372,7 +372,7 @@ def get_user_post(
 
 
 def delete_user_post(
-    post_id : str,
+    titles : str,
     sql : Session,
     header:str
 ):
@@ -389,7 +389,7 @@ def delete_user_post(
     delete_post = sql.query(
         UserPostModel
         ).filter_by(
-            po_id = post_id,
+            title = titles,
             status="True"
             ).first()
 
