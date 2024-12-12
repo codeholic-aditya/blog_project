@@ -102,23 +102,25 @@ def login_front_user(
     status_code=status.HTTP_200_OK
 )
 def logout_user(
-    username:str,
+    header:str=Header(),
     sql:Session=Depends(get_db)
 ):
-    return controller.logout_users(username,sql)
+    if header =="":
+        raise HTTPException (status_code=400,detail="Header is required")
+    return controller.logout_users(header,sql)
 
 
 @app.get(
     "/get-frontend-user-details",
-    response_model=responseschema.User,
+    response_model=responseschema.UserDetails3,
     status_code=status.HTTP_200_OK
 )
 def frontend_user_details(
 
-    fuid : str,
+    header : str,
     sql:Session=Depends(get_db)
 ):
-    return controller.get_user_details(fuid,sql)
+    return controller.get_user_details(header,sql)
 
 
 @app.post(

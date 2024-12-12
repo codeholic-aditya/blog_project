@@ -190,18 +190,27 @@ def login_user(request: schema.Login, sql: Session):
 
 
 def logout_users(
-    username : str,
+    header : str,
     sql : Session   
 ):
     """
     This function is used to logout the user
     """
+    tokens=auth_token(header,sql)
     
-    if not username.strip():
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Username is invalid")
+    if header != tokens:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    if not tokens.strip():
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="User is invalid")
         # return {"message": "Username is invalid"}
+    
+    login_user_user = sql.query(LoginUserModel).filter(LoginUserModel.token==tokens).first()
 
-    logout_user_id = sql.query(FrontUserModel).filter(FrontUserModel.username==username).first()
+    log_user=login_user_user.userid
+    
+
+    logout_user_id = sql.query(FrontUserModel).filter(FrontUserModel.id==log_user).first()
     print(logout_user_id)
     
     if not logout_user_id:
@@ -225,25 +234,34 @@ def logout_users(
         
 def get_user_details(
 
-    fuid:str,
+    header:str,
     sql:Session
 ):
     """
     This function is used to get the single user details
     """
     
-    if not fuid.strip():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    tokens=auth_token(header,sql)
+    
+    if header != tokens:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    # if not fuid.strip():
+    #     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
         # return {"Message":""}
     
+    login_user_id=sql.query(LoginUserModel).filter(LoginUserModel.token==header).first()
+
+    fuid=login_user_id.userid
+    
+    # else:
+    user_exists=sql.query(FrontUserModel).filter(FrontUserModel.id==fuid).first()
+    
+    if user_exists:
+        return {"user" : user_exists}
+    
     else:
-        user_exists=sql.query(FrontUserModel).filter(FrontUserModel.fuid==fuid).first()
-        
-        if user_exists:
-            return {"user" : user_exists}
-        
-        else:
-            return {"Message":"User not found"}
+        return {"Message":"User not found"}
         
         
 def update_user(

@@ -10,6 +10,18 @@ class User(BaseModel):
     createdat: str
     updatedat: str
     
+class UserGetDetails(BaseModel):
+    username:str
+    firstname:str
+    lastname:str
+    email: str
+    phone: int
+    createdat: str
+    updatedat: str
+
+class UserDetails3(BaseModel):           # for create user
+    user:Optional[UserGetDetails]=None
+    message:Optional[str]=None
     
 class UserDetails(BaseModel):           # for create user
     user:Optional[User]=None
